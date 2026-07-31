@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Justine Louise</title>
+<meta name="description" content="Justine Louise — 17-year-old software developer from Yogyakarta, Indonesia. Creator of Lunarielle Bot.">
+
+<!-- Open Graph — powers link previews on WhatsApp, Telegram, Discord, Facebook, LinkedIn, etc. -->
+<meta property="og:type" content="profile">
+<meta property="og:url" content="https://justinelouise-dev.github.io/">
+<meta property="og:title" content="Justine Louise">
+<meta property="og:description" content="17-year-old software developer from Yogyakarta, Indonesia. Creator of Lunarielle Bot.">
+<meta property="og:image" content="https://justinelouise-dev.github.io/assets/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Lunarielle — crescent moon emblem with a rocket over a galaxy backdrop">
+<meta property="og:site_name" content="Justine Louise">
+<meta property="og:locale" content="en_US">
+
+<!-- Twitter / X Card — same preview image is reused for the summary_large_image layout -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Justine Louise">
+<meta name="twitter:description" content="17-year-old software developer from Yogyakarta, Indonesia. Creator of Lunarielle Bot.">
+<meta name="twitter:image" content="https://justinelouise-dev.github.io/assets/og-image.jpg">
+
+<!-- Favicon reuses the same emblem so the browser tab matches the link preview -->
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192.png">
+<link rel="apple-touch-icon" href="/assets/favicon-192.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Justine Louise",
+  "birthPlace": "Yogyakarta, Indonesia",
+  "nationality": "Indonesian",
+  "jobTitle": "Software Developer",
+  "image": "https://justinelouise-dev.github.io/assets/og-image.jpg",
+  "url": "https://justinelouise-dev.github.io/",
+  "knowsAbout": [
+    "Full-stack development",
+    "Automation scripting",
+    "WhatsApp bot architecture (Baileys)",
+    "Node.js"
+  ],
+  "description": "Self-taught developer, started coding at age 12. Creator of Lunarielle Bot, a WhatsApp automation project.",
+  "sameAs": [
+    "https://github.com/Louise-dev-code/Lunarielle-Bot",
+    "https://wa.me/6282245186794"
+  ]
+}
+</script>
+
+<style>
+  :root {
+    --bg: #08090c;
+    --bg-raised: #101319;
+    --bg-raised-2: #161a21;
+    --border: #22262e;
+    --border-soft: #191c22;
+    --text: #f2f4f6;
+    --text-dim: #9aa3ad;
+    --text-faint: #545b65;
+    --accent: #c9a266;
+    --accent-glow: rgba(201, 162, 102, 0.14);
+    --accent-soft: #8fa4b8;
+    --status: #6fa583;
+    --wa: #3fbb70;
+
+    --mono: 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+    --ease: cubic-bezier(.16,.8,.24,1);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    font-size: 16px;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* ambient background grid + glow, fixed so it doesn't scroll away */
+  .bg-fx {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-image:
+      radial-gradient(600px circle at var(--mx, 50%) var(--my, 20%), var(--accent-glow), transparent 60%),
+      linear-gradient(var(--border-soft) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border-soft) 1px, transparent 1px);
+    background-size: auto, 64px 64px, 64px 64px;
+    opacity: .5;
+    mask-image: linear-gradient(to bottom, black, black 60%, transparent 96%);
+  }
+
+  ::selection { background: var(--accent); color: #08090c; }
+
+  a { color: var(--text); }
+
+  .wrap { max-width: 720px; margin: 0 auto; padding: 0 28px; position: relative; z-index: 1; }
+
+  /* ---------- reveal animation base ---------- */
+  .reveal {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity .8s var(--ease), transform .8s var(--ease);
+  }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: .08s; }
+  .reveal-delay-2 { transition-delay: .16s; }
+  .reveal-delay-3 { transition-delay: .24s; }
+
+  /* ---------- top bar ---------- */
+  .topbar {
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(8,9,12,0.72);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  .topbar .wrap {
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 16px; flex-wrap: wrap; padding: 18px 28px;
+  }
+  .wordmark { font-family: var(--mono); font-size: 13px; color: var(--text-dim); display: flex; align-items: center; gap: 9px; }
+  .wordmark b { color: var(--text); font-weight: 600; }
+  .wordmark .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--status); box-shadow: 0 0 0 3px rgba(111,165,131,.15); }
+  .topnav { display: flex; gap: 26px; font-size: 13px; }
+  .topnav a {
+    color: var(--text-dim); text-decoration: none; position: relative; padding: 4px 0;
+  }
+  .topnav a::after {
+    content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px;
+    background: var(--accent); transform: scaleX(0); transform-origin: right;
+    transition: transform .3s var(--ease);
+  }
+  .topnav a:hover { color: var(--text); }
+  .topnav a:hover::after { transform: scaleX(1); transform-origin: left; }
+
+  /* ---------- hero ---------- */
+  .hero { padding: 110px 0 84px; }
+  .hero .kicker {
+    font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--text-faint); margin: 0 0 26px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .hero .kicker .line { width: 24px; height: 1px; background: var(--text-faint); }
+
+  .hero h1 {
+    font-size: clamp(40px, 7vw, 64px); font-weight: 700; letter-spacing: -0.03em;
+    margin: 0 0 14px; color: var(--text); display: flex; flex-wrap: wrap;
+  }
+  .hero h1 .char {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(0.5em) rotate(4deg);
+    animation: charIn .7s var(--ease) forwards;
+  }
+  @keyframes charIn {
+    to { opacity: 1; transform: translateY(0) rotate(0); }
+  }
+
+  .hero .role {
+    font-size: 17px; color: var(--accent-soft); margin: 0 0 34px; font-weight: 500;
+  }
+  .hero .lede {
+    font-size: 18.5px; line-height: 1.8; color: var(--text-dim);
+    max-width: 56ch; margin: 0 0 40px;
+  }
+  .hero .lede strong { color: var(--text); font-weight: 600; }
+
+  .hero .scrollcue {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-family: var(--mono); font-size: 12px; color: var(--text-faint);
+  }
+  .hero .scrollcue .arrow {
+    width: 1px; height: 28px; background: linear-gradient(var(--text-faint), transparent);
+    position: relative; overflow: hidden;
+  }
+  .hero .scrollcue .arrow::after {
+    content: ''; position: absolute; top: -100%; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(var(--accent), transparent);
+    animation: scrollDown 1.8s ease-in-out infinite;
+  }
+  @keyframes scrollDown {
+    0% { top: -100%; }
+    60%, 100% { top: 100%; }
+  }
+
+  /* ---------- facts strip ---------- */
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .facts .fact {
+    padding: 28px 28px;
+    border-left: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+    transition: background .35s var(--ease);
+  }
+  .facts .fact:first-child { border-left: none; }
+  .facts .fact:hover { background: var(--bg-raised); }
+  .facts .fact .k {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.07em;
+    text-transform: uppercase; color: var(--text-faint); margin: 0 0 9px;
+  }
+  .facts .fact .v { font-size: 16.5px; color: var(--text); font-weight: 500; }
+
+  /* ---------- sections ---------- */
+  section { padding: 72px 0; border-top: 1px solid var(--border); }
+  .section-label {
+    font-family: var(--mono); font-size: 12px; letter-spacing: 0.09em;
+    text-transform: uppercase; color: var(--text-faint); margin: 0 0 10px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .section-label .num { color: var(--accent); }
+  section > h2 {
+    font-size: clamp(24px, 3.4vw, 30px); font-weight: 700; letter-spacing: -0.015em;
+    color: var(--text); margin: 0 0 30px;
+  }
+  section p { color: var(--text-dim); max-width: 60ch; font-size: 16px; }
+  section p strong { color: var(--text); font-weight: 600; }
+  section p + p { margin-top: 18px; }
+
+  /* ---------- timeline ---------- */
+  .timeline { list-style: none; margin: 40px 0 0; padding: 0; position: relative; }
+  .timeline::before {
+    content: ''; position: absolute; left: 96px; top: 0; bottom: 0; width: 1px;
+    background: var(--border);
+  }
+  .timeline li {
+    display: grid; grid-template-columns: 96px 1fr; gap: 24px;
+    padding: 26px 0; position: relative;
+  }
+  .timeline li:first-child { padding-top: 0; }
+  .timeline .year {
+    font-family: var(--mono); font-size: 14px; color: var(--accent-soft);
+    padding-top: 2px; font-weight: 600; position: relative;
+  }
+  .timeline .year::after {
+    content: ''; position: absolute; right: -29px; top: 6px; width: 9px; height: 9px;
+    border-radius: 50%; background: var(--bg); border: 2px solid var(--accent-soft);
+  }
+  .timeline .desc { padding-left: 20px; }
+  .timeline .desc h3 {
+    font-size: 15.5px; font-weight: 600; color: var(--text); margin: 0 0 6px;
+  }
+  .timeline .desc p { margin: 0; font-size: 15px; max-width: 52ch; }
+
+  /* ---------- featured work ---------- */
+  .feature {
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 36px 38px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color .4s var(--ease), transform .4s var(--ease), box-shadow .4s var(--ease);
+  }
+  .feature::before {
+    content: ''; position: absolute; inset: 0; border-radius: 10px; padding: 1px;
+    background: linear-gradient(135deg, var(--accent), transparent 40%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+    opacity: 0; transition: opacity .4s var(--ease);
+  }
+  .feature:hover { transform: translateY(-3px); box-shadow: 0 22px 50px -24px rgba(0,0,0,.6); }
+  .feature:hover::before { opacity: 1; }
+
+  .feature .eyebrow {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.07em;
+    text-transform: uppercase; color: var(--accent-soft); margin: 0 0 16px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .feature .eyebrow .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
+  .feature h3 {
+    font-size: 22px; font-weight: 700; color: var(--text); margin: 0 0 14px;
+    letter-spacing: -0.01em;
+  }
+  .feature p { color: var(--text-dim); font-size: 15.5px; max-width: 56ch; margin: 0 0 24px; }
+  .feature .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+  .feature .tags span {
+    font-family: var(--mono); font-size: 11.5px; color: var(--text-dim);
+    border: 1px solid var(--border); padding: 5px 11px; border-radius: 100px;
+    transition: border-color .25s var(--ease), color .25s var(--ease);
+  }
+  .feature .tags span:hover { border-color: var(--accent-soft); color: var(--text); }
+
+  .feature .cta { display: flex; gap: 14px; flex-wrap: wrap; }
+
+  /* ---------- buttons ---------- */
+  .btn {
+    display: inline-flex; align-items: center; gap: 9px;
+    font-family: var(--sans); font-size: 14px; font-weight: 600;
+    padding: 12px 20px; border-radius: 8px;
+    text-decoration: none;
+    position: relative; overflow: hidden;
+    transition: transform .25s var(--ease), box-shadow .25s var(--ease), background .25s var(--ease), border-color .25s var(--ease);
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+  }
+  .btn svg { width: 17px; height: 17px; flex-shrink: 0; position: relative; z-index: 1; }
+  .btn span.label { position: relative; z-index: 1; }
+  .btn .arrow-ic { transition: transform .3s var(--ease); }
+  .btn:hover .arrow-ic { transform: translateX(3px); }
+
+  .btn:active { transform: scale(.96); }
+
+  .btn-primary {
+    background: var(--wa); color: #04140b; border: 1px solid var(--wa);
+    box-shadow: 0 0 0 0 rgba(63,187,112,.4);
+  }
+  .btn-primary:hover { box-shadow: 0 8px 24px -8px rgba(63,187,112,.55); transform: translateY(-2px); }
+
+  .btn-secondary {
+    background: transparent; color: var(--text); border: 1px solid var(--border);
+  }
+  .btn-secondary:hover { border-color: var(--text-dim); background: var(--bg-raised-2); transform: translateY(-2px); }
+
+  .other-work p { font-size: 16px; }
+
+  /* ---------- contact ---------- */
+  .contact-cards { display: grid; gap: 14px; grid-template-columns: 1fr 1fr; margin-bottom: 6px; }
+  .contact-card {
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 22px 22px;
+    text-decoration: none;
+    display: flex; flex-direction: column; gap: 14px;
+    position: relative; overflow: hidden;
+    transition: transform .3s var(--ease), border-color .3s var(--ease), box-shadow .3s var(--ease);
+  }
+  .contact-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 44px -22px rgba(0,0,0,.65);
+  }
+  .contact-card.wa:hover { border-color: rgba(63,187,112,.5); }
+  .contact-card.gh:hover { border-color: var(--text-dim); }
+  .contact-card .icon-wrap {
+    width: 38px; height: 38px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--bg-raised-2); border: 1px solid var(--border);
+    transition: transform .3s var(--ease);
+  }
+  .contact-card:hover .icon-wrap { transform: scale(1.08); }
+  .contact-card .icon-wrap svg { width: 19px; height: 19px; }
+  .contact-card .k { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--text-faint); }
+  .contact-card .v { font-size: 15px; color: var(--text); font-weight: 500; }
+  .contact-card .go {
+    position: absolute; top: 20px; right: 20px; color: var(--text-faint);
+    transition: transform .3s var(--ease), color .3s var(--ease);
+  }
+  .contact-card:hover .go { transform: translate(3px,-3px); color: var(--accent-soft); }
+
+  .contact-row {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 14px 0; border-top: 1px solid var(--border-soft); gap: 16px; flex-wrap: wrap;
+  }
+  .contact-row .k { font-size: 13px; color: var(--text-faint); font-family: var(--mono); }
+  .contact-row .v { font-size: 15px; color: var(--text-dim); }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 34px 0 52px;
+    font-size: 13px; color: var(--text-faint);
+  }
+  footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+
+  @media (max-width: 640px) {
+    .facts { grid-template-columns: 1fr; }
+    .facts .fact { border-left: none; border-top: 1px solid var(--border); }
+    .facts .fact:first-child { border-top: none; }
+    .timeline::before { left: 8px; }
+    .timeline li { grid-template-columns: 20px 1fr; gap: 16px; }
+    .timeline .year { font-size: 0; width: 0; }
+    .timeline .year::after { right: auto; left: -1px; top: 6px; }
+    .timeline .desc { padding-left: 8px; }
+    .hero { padding: 72px 0 56px; }
+    .topbar .wrap { padding: 16px 20px; }
+    .feature { padding: 28px 22px; }
+    .contact-cards { grid-template-columns: 1fr; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .reveal { opacity: 1; transform: none; transition: none; }
+    .hero h1 .char { opacity: 1; transform: none; animation: none; }
+    .scrollcue .arrow::after { animation: none; }
+    * { transition-duration: .01ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-fx" id="bgfx"></div>
+
+<div class="topbar">
+  <div class="wrap">
+    <div class="wordmark"><span class="dot"></span><b>Justine Louise</b></div>
+    <nav class="topnav">
+      <a href="#story">Story</a>
+      <a href="#work">Work</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="kicker"><span class="line"></span>About me</p>
+    <h1 id="heroTitle" aria-label="Justine Louise"></h1>
+    <p class="role reveal">Software Developer, Yogyakarta, Indonesia</p>
+    <p class="lede reveal reveal-delay-1">
+      I'm a 17-year-old developer who taught myself to code at 12 and have been
+      shipping projects publicly since 2020 — <strong>full-stack applications,
+      automation scripts, and tools built to solve real, specific problems.</strong>
+    </p>
+    <div class="scrollcue reveal reveal-delay-2">
+      <span class="arrow"></span>
+      <span>SCROLL</span>
+    </div>
+  </div>
+</header>
+
+<div class="facts reveal">
+  <div class="fact">
+    <p class="k">Based in</p>
+    <p class="v">Yogyakarta, Indonesia</p>
+  </div>
+  <div class="fact">
+    <p class="k">Age</p>
+    <p class="v">17</p>
+  </div>
+  <div class="fact">
+    <p class="k">Coding since</p>
+    <p class="v">2020 (age 12)</p>
+  </div>
+</div>
+
+<section id="story">
+  <div class="wrap">
+    <p class="section-label reveal"><span class="num">01</span> Story</p>
+    <h2 class="reveal">How I got here</h2>
+    <p class="reveal">
+      I started learning to code at 12, during my last year of elementary school,
+      out of plain curiosity about how the apps and tools I used every day
+      actually worked. What began as tinkering turned into a habit of building —
+      first small scripts, then full applications.
+    </p>
+    <p class="reveal reveal-delay-1">
+      By 2020, I started publishing projects for other people to actually use,
+      not just personal experiments. Since then I've worked across full-stack
+      development and automation scripting, with a strong preference for
+      building things that are reliable enough for someone else to depend on.
+    </p>
+
+    <ul class="timeline">
+      <li class="reveal">
+        <span class="year">2020</span>
+        <div class="desc">
+          <h3>Age 12 — first line of code</h3>
+          <p>Started learning to code during my final year of elementary school.</p>
+        </div>
+      </li>
+      <li class="reveal reveal-delay-1">
+        <span class="year">2020</span>
+        <div class="desc">
+          <h3>First public project</h3>
+          <p>Began publishing projects for public use rather than keeping them as personal experiments.</p>
+        </div>
+      </li>
+      <li class="reveal reveal-delay-2">
+        <span class="year">Since</span>
+        <div class="desc">
+          <h3>Full-stack &amp; automation</h3>
+          <p>Built a range of full-stack applications and automation scripts across different problem spaces.</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<section id="work">
+  <div class="wrap">
+    <p class="section-label reveal"><span class="num">02</span> Featured work</p>
+    <h2 class="reveal">What I've built</h2>
+
+    <div class="feature reveal">
+      <p class="eyebrow"><span class="dot"></span>Most notable project</p>
+      <h3>Lunarielle Bot</h3>
+      <p>
+        A WhatsApp automation bot and my most complete project to date — built
+        with a modular architecture, a real-time admin dashboard, and
+        custom-built features including its own image-generation module.
+      </p>
+      <div class="tags">
+        <span>WhatsApp automation</span>
+        <span>Node.js</span>
+        <span>Admin dashboard</span>
+        <span>Plugin architecture</span>
+      </div>
+      <div class="cta">
+        <a class="btn btn-secondary" href="https://github.com/Louise-dev-code/Lunarielle-Bot" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.73.5.98 5.24.98 11.52c0 5.02 3.26 9.28 7.78 10.78.57.1.78-.25.78-.55 0-.27-.01-1.16-.02-2.11-3.17.69-3.84-1.34-3.84-1.34-.52-1.32-1.27-1.67-1.27-1.67-1.04-.71.08-.7.08-.7 1.15.08 1.75 1.18 1.75 1.18 1.02 1.75 2.68 1.24 3.33.95.1-.74.4-1.24.72-1.53-2.53-.29-5.19-1.27-5.19-5.63 0-1.24.44-2.26 1.17-3.06-.12-.29-.51-1.45.11-3.02 0 0 .96-.31 3.15 1.17a10.9 10.9 0 0 1 2.87-.39c.97 0 1.95.13 2.87.39 2.18-1.48 3.14-1.17 3.14-1.17.63 1.57.24 2.73.12 3.02.73.8 1.17 1.82 1.17 3.06 0 4.37-2.67 5.34-5.21 5.62.41.36.77 1.06.77 2.14 0 1.55-.01 2.79-.01 3.17 0 .3.2.66.79.55A11.02 11.02 0 0 0 23.02 11.5C23.02 5.24 18.27.5 12 .5Z"/></svg>
+          <span class="label">View repository</span>
+          <svg class="arrow-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a class="btn btn-primary" href="https://wa.me/6282245186794" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.29-1.39a9.9 9.9 0 0 0 4.7 1.2h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm5.8 14.1c-.24.68-1.4 1.33-1.93 1.4-.5.07-1.09.1-1.75-.11a15.9 15.9 0 0 1-5.72-3.55 6.6 6.6 0 0 1-1.85-2.63c-.28-.75-.02-1.31.32-1.7.28-.32.62-.5.87-.5.24 0 .43 0 .61.01.2 0 .45-.07.7.54.25.6.85 2.08.93 2.23.08.16.13.34.02.55-.1.2-.15.32-.3.5-.15.17-.31.38-.44.51-.15.15-.3.31-.13.6.17.3.76 1.25 1.63 2.02 1.12.99 2.06 1.3 2.36 1.45.3.15.47.13.65-.08.18-.2.75-.87.95-1.17.2-.3.4-.24.66-.14.27.1 1.71.8 2 .95.3.15.5.22.57.34.07.13.07.72-.17 1.4Z"/></svg>
+          <span class="label">Chat on WhatsApp</span>
+        </a>
+      </div>
+    </div>
+
+    <p class="other-work reveal" style="margin-top: 30px;">
+      Beyond Lunarielle Bot, I've worked on a number of other full-stack
+      applications and automation scripts — each one built to handle a
+      specific, practical need rather than as a showcase piece.
+    </p>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <p class="section-label reveal"><span class="num">03</span> Contact</p>
+    <h2 class="reveal">Get in touch</h2>
+
+    <div class="contact-cards">
+      <a class="contact-card wa reveal" href="https://wa.me/6282245186794" target="_blank" rel="noopener">
+        <div class="icon-wrap" style="color:#3fbb70">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.29-1.39a9.9 9.9 0 0 0 4.7 1.2h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm5.8 14.1c-.24.68-1.4 1.33-1.93 1.4-.5.07-1.09.1-1.75-.11a15.9 15.9 0 0 1-5.72-3.55 6.6 6.6 0 0 1-1.85-2.63c-.28-.75-.02-1.31.32-1.7.28-.32.62-.5.87-.5.24 0 .43 0 .61.01.2 0 .45-.07.7.54.25.6.85 2.08.93 2.23.08.16.13.34.02.55-.1.2-.15.32-.3.5-.15.17-.31.38-.44.51-.15.15-.3.31-.13.6.17.3.76 1.25 1.63 2.02 1.12.99 2.06 1.3 2.36 1.45.3.15.47.13.65-.08.18-.2.75-.87.95-1.17.2-.3.4-.24.66-.14.27.1 1.71.8 2 .95.3.15.5.22.57.34.07.13.07.72-.17 1.4Z"/></svg>
+        </div>
+        <div>
+          <p class="k">WhatsApp</p>
+          <p class="v">wa.me/6282245186794</p>
+        </div>
+        <svg class="go" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg>
+      </a>
+
+      <a class="contact-card gh reveal reveal-delay-1" href="https://github.com/Louise-dev-code/Lunarielle-Bot" target="_blank" rel="noopener">
+        <div class="icon-wrap" style="color:#e6edf3">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.73.5.98 5.24.98 11.52c0 5.02 3.26 9.28 7.78 10.78.57.1.78-.25.78-.55 0-.27-.01-1.16-.02-2.11-3.17.69-3.84-1.34-3.84-1.34-.52-1.32-1.27-1.67-1.27-1.67-1.04-.71.08-.7.08-.7 1.15.08 1.75 1.18 1.75 1.18 1.02 1.75 2.68 1.24 3.33.95.1-.74.4-1.24.72-1.53-2.53-.29-5.19-1.27-5.19-5.63 0-1.24.44-2.26 1.17-3.06-.12-.29-.51-1.45.11-3.02 0 0 .96-.31 3.15 1.17a10.9 10.9 0 0 1 2.87-.39c.97 0 1.95.13 2.87.39 2.18-1.48 3.14-1.17 3.14-1.17.63 1.57.24 2.73.12 3.02.73.8 1.17 1.82 1.17 3.06 0 4.37-2.67 5.34-5.21 5.62.41.36.77 1.06.77 2.14 0 1.55-.01 2.79-.01 3.17 0 .3.2.66.79.55A11.02 11.02 0 0 0 23.02 11.5C23.02 5.24 18.27.5 12 .5Z"/></svg>
+        </div>
+        <div>
+          <p class="k">GitHub</p>
+          <p class="v">Louise-dev-code</p>
+        </div>
+        <svg class="go" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg>
+      </a>
+    </div>
+
+    <div class="contact-row reveal">
+      <span class="k">Location</span>
+      <span class="v">Yogyakarta, Indonesia</span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Justine Louise</span>
+    <span>Yogyakarta, Indonesia</span>
+  </div>
+</footer>
+
+<script>
+  // ---- Hero title char-by-char reveal ----
+  (function(){
+    var title = document.getElementById('heroTitle');
+    var text = 'Justine Louise';
+    var html = '';
+    var delay = 0;
+    for (var i = 0; i < text.length; i++) {
+      var ch = text[i];
+      if (ch === ' ') {
+        html += '<span style="display:inline-block;width:0.28em;"></span>';
+        continue;
+      }
+      html += '<span class="char" style="animation-delay:' + delay + 'ms">' + ch + '</span>';
+      delay += 28;
+    }
+    title.innerHTML = html;
+  })();
+
+  // ---- Scroll reveal via IntersectionObserver ----
+  (function(){
+    var els = document.querySelectorAll('.reveal');
+    if (!('IntersectionObserver' in window)) {
+      els.forEach(function(el){ el.classList.add('in'); });
+      return;
+    }
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    els.forEach(function(el){ io.observe(el); });
+  })();
+
+  // ---- Ambient glow follows pointer (desktop) ----
+  (function(){
+    var bgfx = document.getElementById('bgfx');
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduceMotion) return;
+    window.addEventListener('pointermove', function(e){
+      var xPct = (e.clientX / window.innerWidth) * 100;
+      var yPct = (e.clientY / window.innerHeight) * 100;
+      bgfx.style.setProperty('--mx', xPct + '%');
+      bgfx.style.setProperty('--my', yPct + '%');
+    }, { passive: true });
+  })();
+</script>
+
+</body>
+</html>
